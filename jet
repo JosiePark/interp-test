@@ -1,0 +1,23 @@
+include standard_defs.mk
+
+JET_SOURCE = $(JET_DIR)/jet.f
+JET_EXE = $(build_DIR)/jet
+
+
+VPATH = build 
+transport: subsystem1 subsystem2 $(JET_EXE)
+
+subsystem1:
+	cd $(NETCDF_DIR) && $(MAKE)
+
+subsystem2:
+	cd $(LAGR_DIR) && $(MAKE)
+
+
+$(JET_EXE): $(JET_SOURCE) $(build_DIR)/*.o
+	$(CC) $(JET_SOURCE) $(build_DIR)/*.o -o $(JET_EXE) $(CFLAGS) $(INCLUDES) $(LIBS) $(LINKS)
+
+
+clean: 
+	cd build && rm *.o *.mod 
+	 

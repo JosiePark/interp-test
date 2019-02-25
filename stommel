@@ -1,0 +1,23 @@
+include standard_defs.mk
+
+STOMMEL_SOURCE = $(STOMMEL_DIR)/stommel.f
+STOMMEL_EXE = $(build_DIR)/stommel
+
+
+VPATH = build 
+transport: subsystem1 subsystem2 $(STOMMEL_EXE)
+
+subsystem1:
+	cd $(NETCDF_DIR) && $(MAKE)
+
+subsystem2:
+	cd $(LAGR_DIR) && $(MAKE)
+
+
+$(STOMMEL_EXE): $(STOMMEL_SOURCE) $(build_DIR)/*.o
+	$(CC) $(STOMMEL_SOURCE) $(build_DIR)/*.o -o $(STOMMEL_EXE) $(CFLAGS) $(INCLUDES) $(LIBS) $(LINKS)
+
+
+clean: 
+	cd build && rm *.o *.mod 
+	 

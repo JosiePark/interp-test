@@ -1,0 +1,23 @@
+include standard_defs.mk
+
+TWOWAVE_SOURCE = $(TWOWAVE_DIR)/2wave.f
+TWOWAVE_EXE = $(build_DIR)/2wave
+
+
+VPATH = build 
+transport: subsystem1 subsystem2 $(TWOWAVE_EXE)
+
+subsystem1:
+	cd $(NETCDF_DIR) && $(MAKE)
+
+subsystem2:
+	cd $(LAGR_DIR) && $(MAKE)
+
+
+$(TWOWAVE_EXE): $(TWOWAVE_SOURCE) $(build_DIR)/*.o
+	$(CC) $(TWOWAVE_SOURCE) $(build_DIR)/*.o -o $(TWOWAVE_EXE) $(CFLAGS) $(INCLUDES) $(LIBS) $(LINKS)
+
+
+clean: 
+	cd build && rm *.o *.mod 
+	 
